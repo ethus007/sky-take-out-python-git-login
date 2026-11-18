@@ -1,0 +1,14 @@
+# 员工管理测试（对齐上线验收）
+
+与 Java 切片 `sky-take-out-员工管理login功能/01_登录功能测试.md` 同一套场景。测试 **Mock Mapper、不连库**（API 测试 Mock Service）。
+
+| 文件 | 测什么 | 对应 Java |
+|---|---|---|
+| `tests/test_employee_admin_api.py` | HTTP：登录成功带 token；失败三种 msg 参数化成一条 | `EmployeeAdminApiTest` |
+| `tests/test_employee_service_impl.py` | 登录四种结果一条参数化；禁用后再登；新增+回显脱敏；分页+改名 | `EmployeeServiceImplTest` |
+| `tests/test_jwt_token_admin_interceptor.py` | 无票/坏票 401；静态资源放行 | `JwtTokenAdminInterceptorTest` |
+| `tests/test_global_exception_handler.py` | 业务异常 → `Result.code=0`；用户名重复 | `GlobalExceptionHandlerTest` |
+
+```bash
+python -m pytest
+```
