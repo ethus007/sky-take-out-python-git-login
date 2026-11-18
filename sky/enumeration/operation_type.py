@@ -1,0 +1,7 @@
+# 对应 Java: com.sky.enumeration.OperationType
+from enum import Enum
+
+
+class OperationType(Enum):
+    UPDATE = "UPDATE"
+    INSERT = "INSERT"

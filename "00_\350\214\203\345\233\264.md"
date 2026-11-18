@@ -1,0 +1,52 @@
+# sky-take-out Python 员工管理切片
+
+对照 Java 工程 `sky-take-out-员工管理login功能`，目录和类名一一对应。不含分类 / 菜品 / 订单 / 用户端。
+
+对应讲义 `苍穹外卖/讲义/day02` 前四条：
+
+- 新增员工
+- 员工分页查询
+- 启用禁用员工账号
+- 编辑员工（含按 id 回显）
+
+登录、JWT 拦截、公共字段 AutoFill 是员工接口能跑起来的前置，一并留下。
+
+员工管理测试（对齐上线场景，不是按 if 拆）：见 [01_登录功能测试.md](01_登录功能测试.md)。
+
+## 接口（`EmployeeController`）
+
+| 方法 | 路径 | 做什么 |
+|---|---|---|
+| POST | `/admin/employee/login` | 登录（放行，不校验 JWT） |
+| POST | `/admin/employee/logout` | 退出 |
+| POST | `/admin/employee` | 新增 |
+| GET | `/admin/employee/page` | 分页 |
+| POST | `/admin/employee/status/{status}` | 启用/禁用 |
+| GET | `/admin/employee/{id}` | 按 id 查（编辑回显） |
+| PUT | `/admin/employee` | 编辑 |
+
+## 和 Java 的对应
+
+| Java | Python |
+|---|---|
+| `com.sky.entity.Employee` | `sky/entity/employee.py` |
+| `EmployeeServiceImpl.login` | `sky/service/impl/employee_service_impl.py` |
+| `EmployeeController` | `sky/controller/admin/employee_controller.py` |
+| `JwtTokenAdminInterceptor` | `sky/interceptor/jwt_token_admin_interceptor.py` |
+| `GlobalExceptionHandler` | `sky/handler/global_exception_handler.py` |
+| MyBatis `EmployeeMapper` | `sky/mapper/employee_mapper.py`（接口）+ 内存实现 |
+| Spring Boot `SkyApplication` | `sky/main.py`（FastAPI） |
+| `@Data` / Lombok | `@dataclass` |
+
+默认用内存 Mapper（内置 `admin` / `123456`，密码 MD5 与 SQL 种子相同），不强制连 MySQL。`sql/employee.sql` 仍保留，和 Java 同一份表结构。
+
+## 怎么跑
+
+```bash
+cd sky-take-out-python-员工管理login功能
+pip install -r requirements.txt
+python3 -m pytest
+python3 -m uvicorn sky.main:app --host 0.0.0.0 --port 8080
+```
+
+文档：http://localhost:8080/docs
